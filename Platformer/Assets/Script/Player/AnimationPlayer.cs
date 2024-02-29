@@ -29,7 +29,6 @@ public class AnimationPlayer : MonoBehaviour
         {
             animatorPlayer.SetBool("Run", false);
             animatorPlayer.SetBool("Jump", true);
-            animatorPlayer.SetBool("JumpFall", true);
         }
     }
 
@@ -40,8 +39,16 @@ public class AnimationPlayer : MonoBehaviour
             MovePlayer.jump = false;
             OfAllAnimation();
         }
-    }
 
+        if (collision.CompareTag("Water"))
+        {
+            OfAllAnimation();
+            animatorPlayer.SetBool("Death", true);
+            StartCoroutine(DeadPlayer());
+        }
+
+    }
+    
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Ground") && MovePlayer.jump == false)
@@ -57,7 +64,13 @@ public class AnimationPlayer : MonoBehaviour
     private void OfAllAnimation()
     {
         animatorPlayer.SetBool("Jump", false);
-        animatorPlayer.SetBool("JumpFall", false);
         animatorPlayer.SetBool("Fall", false);
+        animatorPlayer.SetBool("Run", false);
+    }
+
+    private IEnumerator DeadPlayer()
+    {
+        yield return new WaitForSeconds(1f);
+        Dead.DeadPlayer();
     }
 }

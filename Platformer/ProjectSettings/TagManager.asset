@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Water
   layers:
   - Default
   - TransparentFX
@@ -44,6 +45,9 @@ TagManager:
     locked: 0
   - name: Object
     uniqueID: 3072534905
+    locked: 0
+  - name: Water
+    uniqueID: 2173188427
     locked: 0
   - name: 'Ground '
     uniqueID: 2681353695

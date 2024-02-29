@@ -4,23 +4,20 @@ using UnityEngine;
 
 public class MovePlayer : MonoBehaviour
 {
-
-    private Animator animatorPlayer;
-    private SpriteRenderer spriteRenderer;
+  
     private Rigidbody2D playerRigidbody;
 
     private float horizontal, vertical;
-    private float speed = 1.3f;
+    private float speed = 1.4f;
 
     public static bool jump = false;
     public static bool run = false;
     public static bool fall = false;
+    public static bool leftOfRight = false;//false - право, true - лево
 
     // Start is called before the first frame update
     void Start()
     {
-        animatorPlayer = this.GetComponent<Animator>();
-        spriteRenderer = this.GetComponent<SpriteRenderer>();
         playerRigidbody = this.GetComponent<Rigidbody2D>();
     }
 
@@ -32,11 +29,9 @@ public class MovePlayer : MonoBehaviour
 
         if (horizontal != 0)
         {
-            if (horizontal > 0) spriteRenderer.flipX = false;
-            if (horizontal < 0) spriteRenderer.flipX = true;
-
+            if (horizontal > 0) leftOfRight = false;
+            else if (horizontal < 0) leftOfRight = true;
             run = true;
-
             this.gameObject.transform.position += speed * Time.deltaTime * new Vector3(horizontal, vertical).normalized;
         }
 
