@@ -34,29 +34,34 @@ public class AnimationPlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Ground"))
-        {
-            MovePlayer.jump = false;
-            OfAllAnimation();
-        }
-
-        if (collision.CompareTag("Water"))
+        if (collision.CompareTag("Dead") )
         {
             OfAllAnimation();
             animatorPlayer.SetBool("Death", true);
             StartCoroutine(DeadPlayer());
         }
-
     }
-    
-    private void OnTriggerExit2D(Collider2D collision)
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.CompareTag("Ground") && MovePlayer.jump == false)
+        if (collision.gameObject.tag == "Ground")
         {
+            Debug.Log("Debug OnCollision");
+            MovePlayer.jump = false;
+            OfAllAnimation();
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ground" && MovePlayer.jump == false)
+        {
+            Debug.Log("Debug OnCollision");
             OfAllAnimation();
             animatorPlayer.SetBool("Fall", true);
         }
     }
+
 
     /// <summary>
     /// Выключаем все анимации на персонаже 

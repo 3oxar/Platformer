@@ -5,7 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
-  - Water
+  - Joint
+  - Dead
   layers:
   - Default
   - TransparentFX
