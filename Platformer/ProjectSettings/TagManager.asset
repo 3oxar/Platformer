@@ -7,7 +7,6 @@ TagManager:
   - Ground
   - Joint
   - Dead
-  - Destroy
   layers:
   - Default
   - TransparentFX
