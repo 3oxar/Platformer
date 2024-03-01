@@ -46,7 +46,6 @@ public class AnimationPlayer : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            Debug.Log("Debug OnCollision");
             MovePlayer.jump = false;
             OfAllAnimation();
         }
@@ -56,7 +55,6 @@ public class AnimationPlayer : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground" && MovePlayer.jump == false)
         {
-            Debug.Log("Debug OnCollision");
             OfAllAnimation();
             animatorPlayer.SetBool("Fall", true);
         }
