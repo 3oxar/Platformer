@@ -34,7 +34,7 @@ public class AnimationPlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Dead") )
+        if (collision.CompareTag("Dead"))
         {
             OfAllAnimation();
             animatorPlayer.SetBool("Death", true);
@@ -44,22 +44,29 @@ public class AnimationPlayer : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.CompareTag("Ground"))
         {
             MovePlayer.jump = false;
             OfAllAnimation();
         }
     }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            animatorPlayer.SetBool("Fall", false);
+        }
+    }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground" && MovePlayer.jump == false)
+        if (collision.gameObject.CompareTag("Ground") && MovePlayer.jump == false )
         {
             OfAllAnimation();
             animatorPlayer.SetBool("Fall", true);
+
         }
     }
-
 
     /// <summary>
     /// Выключаем все анимации на персонаже 
@@ -76,4 +83,6 @@ public class AnimationPlayer : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Dead.DeadPlayer();
     }
+
+
 }
