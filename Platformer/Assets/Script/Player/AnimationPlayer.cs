@@ -2,86 +2,83 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
+[RequireComponent (typeof(MovePlayer))]
 public class AnimationPlayer : MonoBehaviour
 {
 
     private Animator animatorPlayer;
-
-    // Start is called before the first frame update
-    void Start()
+    private MovePlayer movePlayer;
+  
+    private void Awake()
     {
         animatorPlayer = this.GetComponent<Animator>();
+        movePlayer = this.GetComponent<MovePlayer>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (MovePlayer.run)
-        {
-            if (MovePlayer.jump == false) animatorPlayer.SetBool("Run", true);
-        }
-        else
-        {
-            animatorPlayer.SetBool("Run", false);
-        }
-
-        if (MovePlayer.jump)
-        {
-            animatorPlayer.SetBool("Run", false);
-            animatorPlayer.SetBool("Jump", true);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Dead"))
-        {
-            OfAllAnimation();
-            animatorPlayer.SetBool("Death", true);
-            StartCoroutine(DeadPlayer());
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            MovePlayer.jump = false;
-            OfAllAnimation();
-        }
+        if (!movePlayer.isGround)
+            animatorPlayer.SetBool("Fall", true);
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            animatorPlayer.SetBool("Fall", false);
-        }
+        if(collision != null) animatorPlayer.SetBool("Fall", false);
     }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground") && MovePlayer.jump == false )
-        {
-            OfAllAnimation();
-            animatorPlayer.SetBool("Fall", true);
 
-        }
+
+    /// <summary>
+    /// Управления анимациями персонажа 
+    /// </summary>
+    /// <param name="runPlayerAnim">бежит ли персонаж</param>
+    public void PlayerAnim(float runPlayerAnim, bool jumpPlayerAnim, bool attackPlayerAnim)
+    {
+        if (runPlayerAnim != 0)
+            RunAnim(true);
+        else
+            RunAnim(false);
+
+        if (jumpPlayerAnim)
+            JumpAnim(jumpPlayerAnim);
+        else 
+            JumpAnim(jumpPlayerAnim);
+
+        if(attackPlayerAnim)
+            AttackAnim(attackPlayerAnim);
+        else 
+            AttackAnim(attackPlayerAnim);
+    }
+
+    public void RunAnim(bool state)
+    {
+        animatorPlayer.SetBool("Run", state);
+    }
+
+    public void JumpAnim(bool state)
+    {
+        animatorPlayer.SetBool("Jump", state);
+    }
+
+    public void AttackAnim(bool state)
+    {
+        animatorPlayer.SetBool("Attack",state);
+    }
+
+    public void Dead()
+    {
+        StartCoroutine(DeadPlayer());
+        animatorPlayer.SetBool("Death", true);
     }
 
     /// <summary>
-    /// Выключаем все анимации на персонаже 
+    /// Делаем задержку что бы проиграть анимацию смерти
     /// </summary>
-    private void OfAllAnimation()
-    {
-        animatorPlayer.SetBool("Jump", false);
-        animatorPlayer.SetBool("Fall", false);
-        animatorPlayer.SetBool("Run", false);
-    }
-
+    /// <returns></returns>
     private IEnumerator DeadPlayer()
     {
         yield return new WaitForSeconds(1f);
-        Dead.DeadPlayer();
+        Destroy(this.gameObject);
     }
 
 

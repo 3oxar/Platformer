@@ -1,20 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent (typeof(SpriteRenderer))]
 public class SpriteControl : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         spriteRenderer = this.GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ChangedSpriteFlip(float leftOrRight)
     {
-        if (!MovePlayer.leftOfRight) spriteRenderer.flipX = false;
-        if (MovePlayer.leftOfRight) spriteRenderer.flipX = true;
+        if (leftOrRight > 0) spriteRenderer.flipX = false;
+        if (leftOrRight < 0) spriteRenderer.flipX = true;
     }
 }

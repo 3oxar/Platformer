@@ -1,48 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class MovePlayer : MonoBehaviour
 {
-  
+    [SerializeField] private Transform groundedColiderTransform;
+    [SerializeField] private LayerMask groundLayerMask;
+
+    [SerializeField] private float speed = 1.4f;
+    [SerializeField] private float jumpForse = 4;
+
     private Rigidbody2D playerRigidbody;
+    private Vector2 groundPosition;
 
-    private float horizontal, vertical;
-    private float speed = 1.4f;
+    public bool isGround = true;
 
-    public static bool jump = false;
-    public static bool run = false;
-    public static bool fall = false;
-    public static bool leftOfRight = false;//false - право, true - лево
+    private float radiusColiderGrounded = 0.03f;
+   
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         playerRigidbody = this.GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
-
-        if (horizontal != 0)
-        {
-            if (horizontal > 0) leftOfRight = false;
-            else if (horizontal < 0) leftOfRight = true;
-            run = true;
-            this.gameObject.transform.position += speed * Time.deltaTime * new Vector3(horizontal, vertical).normalized;
-        }
-
-        if (vertical > 0 && jump == false)
-        {
-            jump = true;
-            playerRigidbody.AddForce(new Vector2(horizontal, 4f), ForceMode2D.Impulse);
-          
-        }
-
-        if (horizontal == 0) run = false;
+        groundPosition = groundedColiderTransform.position;
+        isGround = Physics2D.OverlapCircle(groundPosition, radiusColiderGrounded, groundLayerMask);
     }
 
+    public void Move(float horizontal, bool jump)
+    {
+        if(Mathf.Abs(horizontal) >0.01f) 
+            HorizontalMovePlayer(horizontal);
+
+        if (jump)
+            JumpPlayer();
+    }
+
+    private void HorizontalMovePlayer(float direction)
+    {
+        playerRigidbody.velocity = new Vector2(direction * speed, playerRigidbody.velocity.y);
+    }
+
+    private void JumpPlayer()
+    {
+        if (isGround)
+            playerRigidbody.AddForce(new Vector2(playerRigidbody.velocity.x, jumpForse), ForceMode2D.Impulse);
+    }
 }
