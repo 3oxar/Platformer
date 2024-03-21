@@ -18,7 +18,6 @@ public class MovePlayer : MonoBehaviour
     public bool isGround = true;
 
     private float radiusColiderGrounded = 0.03f;
-   
 
     // Start is called before the first frame update
     private void Awake()

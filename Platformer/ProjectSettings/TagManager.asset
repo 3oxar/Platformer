@@ -8,6 +8,7 @@ TagManager:
   - Joint
   - Dead
   - Destroy
+  - RevertMoveEnemy
   layers:
   - Default
   - TransparentFX
@@ -45,7 +46,7 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Object
+  - name: ObjectBackground
     uniqueID: 3072534905
     locked: 0
   - name: Water
@@ -56,4 +57,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1311878721
+    locked: 0
+  - name: ObjectFront
+    uniqueID: 609321485
     locked: 0

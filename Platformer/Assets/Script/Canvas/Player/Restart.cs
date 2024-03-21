@@ -9,6 +9,9 @@ public class Restart : MonoBehaviour
     /// <summary>
     /// Рестарт уровня
     /// </summary>
-    public static void RestartScene() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    public static void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
 }

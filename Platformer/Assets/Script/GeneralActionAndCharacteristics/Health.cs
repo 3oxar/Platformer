@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AnimationPlayer))]
 public class Health : MonoBehaviour
 {
     [SerializeField] public float health;
@@ -21,14 +22,14 @@ public class Health : MonoBehaviour
     {
         health -= damage;
         Debug.Log($"Damage - {damage}, health - {health}");
-        isAliveCheck();
+        IsAliveCheck();
 
     }
 
     /// <summary>
     /// проверяем есть ли жизни у персонажа
     /// </summary>
-    private void isAliveCheck()
+    private void IsAliveCheck()
     {
         if(health <= 0)
         {
@@ -36,5 +37,8 @@ public class Health : MonoBehaviour
         }
     }
 
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Dead")) Animation.Dead();
+    }
 }
